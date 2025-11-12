@@ -66,7 +66,7 @@ component_value = markdown_to_word_converter(
 
 if component_value and (
     component_value["markdown_text"] != st.session_state.markdown_text or
-    component_value["config"] != st.session_state.config
+    str(component_value["config"]) != str(st.session_state.config)
 ):
     st.session_state.markdown_text = component_value["markdown_text"]
     st.session_state.config = component_value["config"]

@@ -1,4 +1,3 @@
-
 export interface EditorConfig {
   fontFamily: {
     english: string;
