@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "md2doc"
+version = "0.1.0"
+description = "Markdown to Word Streamlit app"
+readme = "README.md"
+packages = [{ include = "markdown_to_word" }]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+streamlit = "*"
+
+[build-system]
+requires = ["poetry-core>=1.8.0"]
+build-backend = "poetry.core.masonry.api"
