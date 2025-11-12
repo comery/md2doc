@@ -9,7 +9,7 @@ lerna-debug.log*
 
 node_modules
 dist
-!markdown_to_word/frontend/dist/**
+#!markdown_to_word/frontend/dist/**
 dist-ssr
 *.local
 
