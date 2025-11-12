@@ -2,6 +2,7 @@ import os
 from typing import Any, Dict, Optional
 
 import streamlit.components.v1 as components
+from streamlit.errors import StreamlitAPIException
 
 # Set to False when developing the frontend locally (e.g., Vite dev server)
 _RELEASE = True
@@ -18,6 +19,10 @@ def _declare_component():
     # In release mode, serve the built assets from the Python package
     parent_dir = os.path.dirname(os.path.abspath(__file__))
     build_dir = os.path.join(parent_dir, "frontend", "dist")
+    if not os.path.isdir(build_dir):
+        raise StreamlitAPIException(
+            f"No such component directory: '{build_dir}'. Please build the frontend and commit 'markdown_to_word/frontend/dist' or include it in packaging."
+        )
     return components.declare_component(
         "markdown_to_word_converter", path=build_dir
     )

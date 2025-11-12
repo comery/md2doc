@@ -22,6 +22,12 @@ const App: React.FC<ComponentProps> = (props) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
     const [sidebarWidth, setSidebarWidth] = useState<number>(320);
 
+    // Explicitly mark component as ready ASAP to avoid Streamlit timeout
+    useEffect(() => {
+        Streamlit.setComponentReady();
+        Streamlit.setFrameHeight();
+    }, []);
+
     const sendStateToStreamlit = useCallback(() => {
         Streamlit.setComponentValue({ markdown_text: markdownText, config: config });
     }, [markdownText, config]);
