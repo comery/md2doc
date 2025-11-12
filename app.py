@@ -3,6 +3,7 @@ from markdown_to_word import markdown_to_word_converter
 
 st.set_page_config(layout="wide")
 st.title("Markdown to Word Converter")
+st.markdown("<div style='height:12px'></div>", unsafe_allow_html=True)
 
 # Initialize state
 if 'markdown_text' not in st.session_state:

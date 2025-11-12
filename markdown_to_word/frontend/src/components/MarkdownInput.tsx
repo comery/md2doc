@@ -45,7 +45,7 @@ export const MarkdownInput: React.FC<MarkdownInputProps> = ({ value, onChange, b
       <textarea
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="flex-grow p-4 w-full h-full resize-none focus:outline-none bg-transparent font-mono text-gray-800 dark:text-gray-200"
+        className="flex-grow p-4 w-full h-full resize-none focus:outline-none bg-transparent font-mono text-black dark:text-black placeholder-black"
         placeholder="Paste your Markdown here or upload a file..."
       />
     </div>

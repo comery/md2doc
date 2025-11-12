@@ -1,5 +1,0 @@
-{
-  "name": "Markdown to Word Converter",
-  "description": "A web application to convert Markdown documents to an editable Word-like format. It features a side-by-side preview, customizable styling options through a collapsible sidebar, and a rich text editor for final adjustments.",
-  "requestFramePermissions": []
-}

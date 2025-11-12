@@ -11,9 +11,9 @@ declare global {
     }
 }
 
-const DEFAULT_MARKDOWN = `# Markdown to Word Converter
+const DEFAULT_MARKDOWN = `# Markdown to Word Convertor
 
-This is a demo of a real-time Markdown to Word converter.
+This is a demo of a real-time Markdown to Word convertor.
 
 ## Features
 

@@ -20,7 +20,7 @@ const App: React.FC<ComponentProps> = (props) => {
     const [config, setConfig] = useState<EditorConfig>(initialConfig);
     const [htmlOutput, setHtmlOutput] = useState<string>('');
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
-    const [sidebarWidth, setSidebarWidth] = useState<number>(320);
+    const [sidebarWidth, setSidebarWidth] = useState<number>(260);
 
     // Explicitly mark component as ready ASAP to avoid Streamlit timeout
     useEffect(() => {
@@ -70,57 +70,58 @@ const App: React.FC<ComponentProps> = (props) => {
                 font-family: ${config.fontFamily.english}, ${config.fontFamily.chinese};
                 font-size: ${config.fontSize.body}px;
                 line-height: 1.6;
+                color: #1f2937;
             }
             .word-preview h1 {
                 font-size: ${config.fontSize.h1}px;
                 font-weight: bold;
-                margin-top: 24px;
-                margin-bottom: 12px;
+                margin-top: 12px;
+                margin-bottom: 8px;
                 border-bottom: 1px solid #e2e8f0;
-                padding-bottom: 4px;
+                padding-bottom: 2px;
             }
             .word-preview h2 {
                 font-size: ${config.fontSize.h2}px;
                 font-weight: bold;
-                margin-top: 20px;
-                margin-bottom: 10px;
+                margin-top: 10px;
+                margin-bottom: 6px;
             }
             .word-preview h3 {
                 font-size: ${config.fontSize.h3}px;
                 font-weight: bold;
-                margin-top: 16px;
-                margin-bottom: 8px;
+                margin-top: 8px;
+                margin-bottom: 4px;
             }
             .word-preview p {
-                margin-bottom: 16px;
+                margin-bottom: 12px;
             }
             .word-preview ul, .word-preview ol {
-                margin-left: 24px;
-                margin-bottom: 16px;
+                margin-left: 20px;
+                margin-bottom: 12px;
             }
             .word-preview table {
                 width: 100%;
                 border-collapse: collapse;
-                margin-bottom: 16px;
+                margin-bottom: 12px;
             }
             .word-preview th, .word-preview td {
                 border: 1px solid #cbd5e0;
-                padding: 8px 12px;
+                padding: 6px 10px;
             }
             .word-preview th {
                 background-color: #f7fafc;
                 font-weight: bold;
             }
             .word-preview code {
-                background-color: #edf2f7;
+                background-color: #e5e7eb;
                 padding: 2px 4px;
                 border-radius: 4px;
                 font-family: monospace;
             }
             .word-preview blockquote {
                 border-left: 4px solid #e2e8f0;
-                padding-left: 16px;
-                color: #718096;
+                padding-left: 12px;
+                color: #4a5568;
                 margin-left: 0;
                 margin-right: 0;
             }
