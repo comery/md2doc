@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { BoldIcon, ItalicIcon, UnderlineIcon, BulletListIcon, NumberListIcon, BrushIcon, DownloadIcon, CopyIcon, IndentIcon, OutdentIcon } from './icons';
+import { BoldIcon, ItalicIcon, UnderlineIcon, BrushIcon, DownloadIcon, CopyIcon, IndentIcon, OutdentIcon } from './icons';
 
 interface WordPreviewProps {
   htmlContent: string;
   bgColor: string;
 }
 
-const EditorToolbar: React.FC<{ onCopy: () => void; onDownload: () => void; onFormatPainterClick: () => void; onFormatPainterLock: () => void; painterActive: boolean; painterLocked: boolean; }> = ({ onCopy, onDownload, onFormatPainterClick, onFormatPainterLock, painterActive, painterLocked }) => {
+const EditorToolbar: React.FC<{ onCopy: () => void; onDownload: () => void; onFormatPainterClick: () => void; onFormatPainterLock: () => void; painterActive: boolean; painterLocked: boolean; bulletStyle: string; onBulletStyleChange: (v: string) => void; onApplyBullet: () => void; numberStyle: string; onNumberStyleChange: (v: string) => void; onApplyNumber: () => void; }> = ({ onCopy, onDownload, onFormatPainterClick, onFormatPainterLock, painterActive, painterLocked, bulletStyle, onBulletStyleChange, onApplyBullet, numberStyle, onNumberStyleChange, onApplyNumber }) => {
     const executeCommand = (command: string, value?: string) => {
         document.execCommand(command, false, value);
     };
@@ -43,9 +43,24 @@ const EditorToolbar: React.FC<{ onCopy: () => void; onDownload: () => void; onFo
             <button onClick={onFormatPainterClick} onDoubleClick={onFormatPainterLock} title={painterLocked ? 'Format Painter (locked)' : 'Format Painter'} className={`p-2 rounded ${painterActive ? 'bg-indigo-100 dark:bg-indigo-900' : ''} hover:bg-gray-200 dark:hover:bg-gray-700`}><BrushIcon /></button>
             
             <div className="h-6 border-l border-gray-300 dark:border-gray-600 mx-1"></div>
-
-            <button onClick={() => executeCommand('insertUnorderedList')} title="Bulleted List" className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"><BulletListIcon /></button>
-            <button onClick={() => executeCommand('insertOrderedList')} title="Numbered List" className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"><NumberListIcon /></button>
+            <label className="text-xs text-gray-600 dark:text-gray-300">Bullet</label>
+            <select value={bulletStyle} onChange={(e) => onBulletStyleChange(e.target.value)} className="px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 focus:outline-none">
+                <option value="disc">• Disc</option>
+                <option value="circle">○ Circle</option>
+                <option value="square">■ Square</option>
+                <option value="diamond">◆ Diamond</option>
+            </select>
+            <button onClick={onApplyBullet} className="px-2 py-1 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700">Apply</button>
+            <div className="h-6 border-l border-gray-300 dark:border-gray-600 mx-1"></div>
+            <label className="text-xs text-gray-600 dark:text-gray-300">Number</label>
+            <select value={numberStyle} onChange={(e) => onNumberStyleChange(e.target.value)} className="px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 focus:outline-none">
+                <option value="decimal">1, 2, 3</option>
+                <option value="lower-alpha">a, b, c</option>
+                <option value="upper-alpha">A, B, C</option>
+                <option value="lower-roman">i, ii, iii</option>
+                <option value="upper-roman">I, II, III</option>
+            </select>
+            <button onClick={onApplyNumber} className="px-2 py-1 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700">Apply</button>
             <button onClick={() => executeCommand('indent')} title="Increase Indent" className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"><IndentIcon /></button>
             <button onClick={() => executeCommand('outdent')} title="Decrease Indent" className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"><OutdentIcon /></button>
         </div>
@@ -191,27 +206,20 @@ export const WordPreview: React.FC<WordPreviewProps> = ({ htmlContent, bgColor }
     return (
         <div className="h-full flex flex-col" style={{ backgroundColor: bgColor }}>
             <style>{`.word-preview ul[data-marker="diamond"] > li::marker{content:'◆ ';}`}</style>
-            <EditorToolbar onDownload={downloadDoc} onCopy={copyContent} onFormatPainterClick={() => { if (painterStyle) { setPainterStyle(null); setPainterLocked(false); } else { capturePainter(); setPainterLocked(false); } }} onFormatPainterLock={() => { capturePainter(); setPainterLocked(true); }} painterActive={!!painterStyle} painterLocked={painterLocked} />
-            <div className="p-2 border-b border-gray-300 dark:border-gray-700 flex items-center gap-2 bg-gray-50 dark:bg-gray-800">
-                <label className="text-xs text-gray-600 dark:text-gray-300">Bullet</label>
-                <select value={bulletStyle} onChange={(e) => { setBulletStyle(e.target.value); updateCurrentListStyle(); }} className="px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 focus:outline-none">
-                    <option value="disc">• Disc</option>
-                    <option value="circle">○ Circle</option>
-                    <option value="square">■ Square</option>
-                    <option value="diamond">◆ Diamond</option>
-                </select>
-                <button onClick={() => applyUnorderedList(bulletStyle)} className="px-2 py-1 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700">Apply</button>
-                <div className="h-6 border-l border-gray-300 dark:border-gray-600 mx-1"></div>
-                <label className="text-xs text-gray-600 dark:text-gray-300">Number</label>
-                <select value={numberStyle} onChange={(e) => { setNumberStyle(e.target.value); updateCurrentListStyle(); }} className="px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 focus:outline-none">
-                    <option value="decimal">1, 2, 3</option>
-                    <option value="lower-alpha">a, b, c</option>
-                    <option value="upper-alpha">A, B, C</option>
-                    <option value="lower-roman">i, ii, iii</option>
-                    <option value="upper-roman">I, II, III</option>
-                </select>
-                <button onClick={() => applyOrderedList(numberStyle)} className="px-2 py-1 text-sm rounded hover:bg-gray-2 00 dark:hover:bg-gray-700">Apply</button>
-            </div>
+            <EditorToolbar
+              onDownload={downloadDoc}
+              onCopy={copyContent}
+              onFormatPainterClick={() => { if (painterStyle) { setPainterStyle(null); setPainterLocked(false); } else { capturePainter(); setPainterLocked(false); } }}
+              onFormatPainterLock={() => { capturePainter(); setPainterLocked(true); }}
+              painterActive={!!painterStyle}
+              painterLocked={painterLocked}
+              bulletStyle={bulletStyle}
+              onBulletStyleChange={(v) => { setBulletStyle(v); updateCurrentListStyle(); }}
+              onApplyBullet={() => applyUnorderedList(bulletStyle)}
+              numberStyle={numberStyle}
+              onNumberStyleChange={(v) => { setNumberStyle(v); updateCurrentListStyle(); }}
+              onApplyNumber={() => applyOrderedList(numberStyle)}
+            />
             <div
                 key={htmlContent}
                 ref={editorRef}
@@ -220,9 +228,7 @@ export const WordPreview: React.FC<WordPreviewProps> = ({ htmlContent, bgColor }
                 className="word-preview flex-grow p-4 w-full h-full focus:outline-none bg-transparent text-gray-800 dark:text-gray-200 overflow-y-auto"
                 dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
-            <div className="border-t border-gray-300 dark:border-gray-700">
-                <EditorToolbar onDownload={downloadDoc} onCopy={copyContent} onFormatPainterClick={() => { if (painterStyle) { setPainterStyle(null); setPainterLocked(false); } else { capturePainter(); setPainterLocked(false); } }} onFormatPainterLock={() => { capturePainter(); setPainterLocked(true); }} painterActive={!!painterStyle} painterLocked={painterLocked} />
-            </div>
+            
         </div>
     );
 };
